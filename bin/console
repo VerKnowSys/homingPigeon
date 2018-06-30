@@ -1,0 +1,10 @@
+#!/bin/sh
+
+. bin/loader
+
+
+eval "mix compile" && \
+iex \
+    --name "HomingPigeon-${MIX_ENV}" \
+    --sname "HomingPigeon-${MIX_ENV}" \
+    -S mix

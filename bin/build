@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+. bin/loader
+
+if [ ! -d "deps" ]; then
+    eval "mix deps.get"
+fi
+eval "mix do compile" || \
+    eval "mix do compile" > /dev/null

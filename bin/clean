@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Accept MIX_ENV as first argument:
+if [ -n "${1}" ] && [ -d "_build/${1}" ]; then
+    printf "%s\n" "Cleaning _build/${1}/, doc/ and escript"
+    rm -rf "_build/${1}" "./doc" "./yst"
+fi
+
+# Default mode - no params given:
+if [ -z "${1}" ]; then
+    printf "%s\n" "Wiping out: _build/ and doc/"
+    rm -rf "./_build" "./doc" "./yst"
+fi

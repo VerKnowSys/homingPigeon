@@ -1,0 +1,4 @@
+{
+    "alert_channel":"#critical-alerts",
+    "alert_webhook":"https://hooks.slack.com/services/MY-SLACK-WEBHOOK-URL"
+}

@@ -1,0 +1,47 @@
+#!/bin/sh
+
+clear
+
+test -f ./.env && . ./.env
+
+# set -e
+export MIX_ENV="${MIX_ENV:-dev}"
+export UUID="DEADBEEF-E4D6-41F9"
+
+export LANG="en_GB.UTF-8"
+export LC_COLLATE="en_GB.UTF-8"
+export LC_CTYPE="en_GB.UTF-8"
+export LC_MESSAGES="en_GB.UTF-8"
+export LC_MONETARY="en_GB.UTF-8"
+export LC_NUMERIC="en_GB.UTF-8"
+export LC_TIME="en_GB.UTF-8"
+
+
+case "${0}" in
+
+    # NOTE: Accept first param as MIX_ENV,
+    #       Only if invoked from "bin/build" or "bin/console.
+    "bin/build"|"bin/console")
+        if [ -n "${1}" ]; then
+            export MIX_ENV="${1:-${MIX_ENV}}"
+            printf "%s\n" "Environment set: ${MIX_ENV}"
+        else
+            printf "%s\n" "Environment: ${MIX_ENV}"
+        fi
+        ;;
+
+    "bin/run")
+        export MIX_ENV="${1:-dev}"
+        printf "%s\n" "Environment set: ${MIX_ENV}"
+        ;;
+
+    "bin/test")
+        export MIX_ENV="${1:-test}"
+        printf "%s\n" "Environment set: ${MIX_ENV}"
+        ;;
+
+    *)
+        printf "%s\n" "Environment: ${MIX_ENV}"
+        ;;
+
+esac
