@@ -88,13 +88,15 @@ defmodule Pigeon.Http do
         agency_name = Application.get_env(:pigeon, :agency_name)
         channel_postfix = Application.get_env(:pigeon, :agency_channel_postfix)
         channel_critical = Application.get_env(:pigeon, :agency_channel_critical)
-        notified_agency = result.check.alert_channel
-          |> String.trim_leading("#")
-          |> String.replace("#{channel_postfix}", "")
-          |> String.replace(channel_critical, "#{agency_name}")
-        if String.trim(notified_agency) == "" do
-          notified_agency = agency_name
-        end
+        notified_agency =
+          case result.check.alert_channel
+            |> String.trim_leading("#")
+            |> String.replace("#{channel_postfix}", "")
+            |> String.replace(channel_critical, "#{agency_name}")
+            |> String.trim() do
+              "" -> agency_name
+              val -> val
+            end
         Logger.debug "Sending global notification of agency: #{notified_agency}, to channel: #{global_channel}"
         notification_cmd = "bin/slack_notification.sh \"#{global_webhook}\" \"#{global_channel}\" \":warning: Alert\" \"\\n:blank: *Client:* *#{result.check.client}* of agency: *#{notified_agency}*.\\n:blank: *Errors:* #{Enum.join(result.errors, " ")}\\n:blank: *Origin:* :flag-#{current_location}: (src) ⇒ :flag-#{current_destination}: (dest)\\n:blank:\""
         case Porcelain.shell(notification_cmd) do
