@@ -1,11 +1,11 @@
-require Logger
-
-
 defmodule Pigeon.Monitor do
-  use GenServer
   @moduledoc """
   Pigeon is monitor module for domain validity and host availability checks
   """
+  require Logger
+  use GenServer
+  alias Pigeon.Domain
+  alias Pigeon.Http
 
 
   def start_link() do
@@ -25,13 +25,13 @@ defmodule Pigeon.Monitor do
 
 
   def check_all do
-    Pigeon.Domain.check_all_domains()
-    Pigeon.Http.check_all_hosts()
+    Domain.check_all_domains()
+    Http.check_all_hosts()
   end
 
 
   def handle_info(:domain_check, state) do
-    Pigeon.Domain.check_all_domains()
+    Domain.check_all_domains()
     Process.send_after(self(), :domain_check, domain_checks_interval_ms())
     {:noreply, state}
   end
@@ -39,7 +39,7 @@ defmodule Pigeon.Monitor do
 
   def handle_info(:http_check, state) do
     Logger.info "Pigeon checks seeking for host troubles.."
-    Pigeon.Http.check_all_hosts()
+    Http.check_all_hosts()
     Process.send_after(self(), :http_check, http_checks_interval_ms())
     {:noreply, state}
   end
