@@ -7,7 +7,7 @@ defmodule Pigeon.Supervisor do
 
   def init(:ok) do
     children = [
-      # worker(Pigeon.Monitor, [])
+      worker(Pigeon.Monitor, [])
     ]
 
     supervise(children, strategy: :one_for_one)
