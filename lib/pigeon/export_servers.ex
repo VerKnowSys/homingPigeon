@@ -10,7 +10,7 @@ defmodule Pigeon.ExportServers do
   """
   def export_csv do
     # gather values
-    values = Checks.hosts
+    values = Checks.hosts()
       |> Enum.map(fn host ->
         client = host.client
         page = host.pages |> List.first()
