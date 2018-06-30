@@ -22,7 +22,8 @@ Pigeon.Http.check_all_hosts
 
 * Elixir 1.5+
 * OTP 19+
-* Libressl 2.7+ (openssl executable available in PATH)
+* Libressl 2.7+ (`openssl` available in PATH)
+* Curl 7+ (`curl` available in PATH) for [Slack](https://slack.com/) notifications
 
 
 ## Configuration files
