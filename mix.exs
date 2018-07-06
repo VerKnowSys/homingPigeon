@@ -3,7 +3,7 @@ defmodule Pigeon.Mixfile do
 
   def project do
     [app: :pigeon,
-     version: "1.0.0",
+     version: "1.0.1",
      elixir: "~> 1.5",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -16,7 +16,7 @@ defmodule Pigeon.Mixfile do
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
     [mod: {Pigeon, []},
-     applications: [:logger, :hackney, :poison, :sweet_xml, :httpotion, :porcelain]]
+     applications: [:logger, :hackney, :poison, :sweet_xml, :httpotion, :porcelain, :geolix]]
   end
 
   # Dependencies can be Hex packages:
@@ -36,7 +36,7 @@ defmodule Pigeon.Mixfile do
       {:ibrowse, "~> 4.2", override: true},
       {:sweet_xml, "~> 0.6"},
       {:porcelain, "~> 2.0"},
-      {:geoip, "~> 0.1"},
+      {:geolix, "~> 0.16"},
     ]
   end
 end

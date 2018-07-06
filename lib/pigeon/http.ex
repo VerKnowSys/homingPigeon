@@ -30,22 +30,16 @@ defmodule Pigeon.Http do
   @spec get_ip_location(ipv4 :: String.t) :: String.t
   def get_ip_location(nil), do: get_ip_location("")
   def get_ip_location ipv4 do
-    trimmed = String.trim(ipv4)
-    case HTTPotion.get Http.remote_country_check_site() do
-      %HTTPotion.Response{body: "429 Too Many Requests\n", status_code: 429, headers: _} ->
-        Logger.warn "Too many requests to: #{Http.remote_country_check_site()} for current location. Ignoring.."
-        "!?"
+    trimmed_ip = String.trim(ipv4)
+    case Geolix.lookup(trimmed_ip) do
 
-      %HTTPotion.Response{body: country, status_code: 200, headers: _} ->
-        String.trim country
+      %{mmdb2: %{country: %{iso_code: code}}} ->
+        code
 
-      %HTTPotion.Response{status_code: 404} ->
-        Logger.error "Page not found: #{Http.remote_country_check_site()}!"
-        "??"
+      _ ->
+        Logger.warn "No Geolix result for IP: #{trimmed_ip}."
+        "--"
 
-      %HTTPotion.ErrorResponse{message: reason} ->
-        Logger.error "Error response from #{Http.remote_country_check_site()}: #{inspect reason}"
-        "??"
     end
   end
 
@@ -66,7 +60,7 @@ defmodule Pigeon.Http do
 
       %HTTPotion.ErrorResponse{message: reason} ->
         Logger.error "Error response from #{Http.remote_ipv4_check_site()}: #{inspect reason}"
-        "??"
+        "!!"
     end
   end
 

@@ -30,7 +30,15 @@ config :pigeon, default_nameserver: "9.9.9.9"
 
 # External IP check URL:
 config :pigeon, default_ext_ip_check_url: "https://ifconfig.co/ip"
-config :pigeon, default_country_check_url: "https://ifconfig.co/country-iso"
 
 # Export to CSV:
 config :pigeon, default_servers_list_csv: "agencies-servers-list.csv"
+
+# Geolix mmdb:
+config :geolix, databases: [
+  %{
+    id: :mmdb2,
+    adapter: Geolix.Adapter.MMDB2,
+    source: "data-mmdb/GeoLite2-Country.mmdb"
+  }
+]
