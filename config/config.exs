@@ -30,6 +30,7 @@ config :pigeon, default_nameserver: "9.9.9.9"
 
 # External IP check URL:
 config :pigeon, default_ext_ip_check_url: "https://ifconfig.co/ip"
+config :pigeon, default_country_check_url: "https://ifconfig.co/country-iso"
 
 # Export to CSV:
 config :pigeon, default_servers_list_csv: "agencies-servers-list.csv"

@@ -14,6 +14,7 @@ defmodule Pigeon.Http do
 
   # Remote site to determine external IP from any physical location.
   def remote_ipv4_check_site, do: Application.get_env(:pigeon, :default_ext_ip_check_url)
+  def remote_country_check_site, do: Application.get_env(:pigeon, :default_country_check_url)
 
   def process_url(url), do: url
 
@@ -30,9 +31,21 @@ defmodule Pigeon.Http do
   def get_ip_location(nil), do: get_ip_location("")
   def get_ip_location ipv4 do
     trimmed = String.trim(ipv4)
-    case GeoIP.lookup(trimmed) do
-      {:ok, data} -> data.country_code
-      {:error, _} -> "??"
+    case HTTPotion.get Http.remote_country_check_site() do
+      %HTTPotion.Response{body: "429 Too Many Requests\n", status_code: 429, headers: _} ->
+        Logger.warn "Too many requests to: #{Http.remote_country_check_site()} for current location. Ignoring.."
+        "!?"
+
+      %HTTPotion.Response{body: country, status_code: 200, headers: _} ->
+        String.trim country
+
+      %HTTPotion.Response{status_code: 404} ->
+        Logger.error "Page not found: #{Http.remote_country_check_site()}!"
+        "??"
+
+      %HTTPotion.ErrorResponse{message: reason} ->
+        Logger.error "Error response from #{Http.remote_country_check_site()}: #{inspect reason}"
+        "??"
     end
   end
 

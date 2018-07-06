@@ -16,7 +16,7 @@ defmodule Pigeon.Mixfile do
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
     [mod: {Pigeon, []},
-     applications: [:logger, :hackney, :poison, :sweet_xml, :httpotion, :porcelain, :geoip]]
+     applications: [:logger, :hackney, :poison, :sweet_xml, :httpotion, :porcelain]]
   end
 
   # Dependencies can be Hex packages:
