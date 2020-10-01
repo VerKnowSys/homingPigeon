@@ -14,9 +14,9 @@ defmodule PigeonTest do
   test "Pigeon test of Http checks and results" do
     a_check = %Check{
       client: "żółtyżółw",
-      domains: ["peter.centra.com"],
-      pages: ["https://peter.centra.com/amspeter/", "https://peter.centra.com/aa"],
-      expected: ["Username", "Password", "alabaster", "tralalala", "test"],
+      domains: ["verknowsys.com"],
+      pages: ["https://verknowsys.com/"],
+      expected: ["versatile", "knowledge", "systems"],
     }
 
     check_results = Http.process_pages a_check, [
@@ -39,7 +39,7 @@ defmodule PigeonTest do
   test "Pigeon test of Domain checks and results" do
     a_check = %Check{
       client: "żółtyżółw",
-      domains: ["peter.centra.com", "peter.centraqa.com"],
+      domains: ["verknowsys.com"],
       pages: []
     }
 
@@ -53,7 +53,7 @@ defmodule PigeonTest do
 
     wrong_check = %Check{
       client: "zielonyżółw",
-      domains: ["idontexistcausetheresnome.centra.com"],
+      domains: ["idontexistcausetheresnome.google.com"],
       pages: []
     }
     wrong_results = Domain.process_domains wrong_check
@@ -61,7 +61,7 @@ defmodule PigeonTest do
     assert 1 == length wrong_results
     for result <- wrong_results do
       assert result.result == :error
-      assert String.contains? Enum.join(result.errors, " "), "No response for idontexistcausetheresnome.centra.com under DNS server:"
+      assert String.contains? Enum.join(result.errors, " "), "No response for idontexistcausetheresnome.google.com under DNS server:"
       Logger.debug "Result: #{inspect result}"
     end
   end
